@@ -1,0 +1,172 @@
+<?xml version="1.0"?>
+
+<!--
+**********************************************************************
+instrumentation.xml
+
+c172p instrumentation configuration. This file selects the
+instrumentation modules that should be available.
+
+You can have several instances of the same instrument type.
+The value inside the name tag becomes the node in the property tree.
+If two instruments have the same name you must use the number tag
+to separate them. They become name[number] in the property tree.
+Some instruments have additional configuration tags like static-port
+and pitot-port. The static- and pitot-ports (and any other system that
+an instrument depend on) have to be configured in the systems
+configuration file: generic-systems.xml
+
+The values in this file are the default values. If any configuration
+tags are omitted in an aircraft specific version of this configuration
+file, these values will be used (they are hardcoded).
+
+**********************************************************************
+-->
+
+<PropertyList>
+
+    <adf>
+        <name>adf</name>
+        <number>0</number>
+    </adf>
+
+    <airspeed-indicator>
+        <name>airspeed-indicator</name>
+        <number>0</number>
+        <total-pressure>/systems/pitot/total-pressure-inhg</total-pressure>
+        <static-pressure>/systems/static-pressure-inhg-selected</static-pressure>
+    </airspeed-indicator>
+
+    <altimeter>
+        <name>altimeter</name>
+        <number>0</number>
+        <static-pressure>/systems/static-pressure-inhg-selected</static-pressure>
+        <quantum>0</quantum>
+        <tau>0</tau>
+    </altimeter>
+
+    <altimeter>
+        <name>altimeter-kap140-internal</name>
+        <number>0</number>
+        <static-pressure>/systems/static-pressure-inhg-selected</static-pressure>
+        <quantum>0</quantum>
+        <tau>0</tau>
+    </altimeter>
+
+    <attitude-indicator>
+        <name>attitude-indicator</name>
+        <number>0</number>
+        <suction>/systems/vacuum/suction-inhg</suction>
+        <limits>
+            <spin-thresh>0.8</spin-thresh>
+            <max-roll-error-deg>40.0</max-roll-error-deg>
+            <max-pitch-error-deg>12.0</max-pitch-error-deg>
+        </limits>
+        <gyro>
+            <spin-up-sec>180.0</spin-up-sec>     <!-- ~3 minutes -->
+            <spin-down-sec>300.0</spin-down-sec> <!-- ~5 minutes -->
+        </gyro>
+    </attitude-indicator>
+
+    <clock>
+        <name>clock</name>
+        <number>0</number>
+    </clock>
+
+    <dme>
+        <name>dme</name>
+        <number>0</number>
+    </dme>
+
+    <altimeter>
+        <name>encoder</name>
+        <number>0</number>
+        <static-pressure>/systems/static-pressure-inhg-selected</static-pressure>
+        <quantum>10</quantum>
+        <tau>0.1</tau>
+    </altimeter>
+
+    <marker-beacon>
+        <name>marker-beacon</name>
+        <number>0</number>
+    </marker-beacon>
+
+    <heading-indicator-dg>
+        <name>heading-indicator</name>
+        <number>0</number>
+        <suction>/systems/vacuum/suction-inhg</suction>
+        <minimum-vacuum>4.0</minimum-vacuum>  <!-- source: https://www.kellymfg.com/images/RC%20ALLEN%20Catalog.pdf -->
+        <limits>
+            <yaw-limit-rate>11.5</yaw-limit-rate> <!-- about 55° bank, from video footage, see refs in https://github.com/HHS81/c182s/pull/527 -->
+            <yaw-error-factor>0.033</yaw-error-factor>
+            <g-limit-lower>-0.85</g-limit-lower>
+            <g-limit-upper>2.0</g-limit-upper>
+            <g-error-factor>0.033</g-error-factor>
+            <g-limit-tumble-factor>1.5</g-limit-tumble-factor>
+        </limits>
+        <gyro>
+            <minimum-spin-norm>0.8</minimum-spin-norm>
+            <spin-up-sec>180.0</spin-up-sec>     <!-- ~3 minutes -->
+            <spin-down-sec>300.0</spin-down-sec> <!-- ~5 minutes -->
+        </gyro>
+    </heading-indicator-dg>
+
+    <magnetic-compass>
+        <name>magnetic-compass</name>
+        <number>0</number>
+        <deviation>/instrumentation/magnetic-compass/deviation-deg</deviation>
+    </magnetic-compass>
+
+    <comm-radio>
+        <name>comm</name>
+        <number>0</number>
+		<power-supply>systems/electrical/outputs/comm[0]</power-supply>
+        <eight-point-three>1</eight-point-three>
+    </comm-radio>
+
+    <comm-radio>
+        <name>comm</name>
+        <number>1</number>
+		<power-supply>systems/electrical/outputs/comm[1]</power-supply>
+        <eight-point-three>1</eight-point-three>
+    </comm-radio>
+
+    <nav-radio>
+        <name>nav</name>
+        <number>0</number>
+		<power-supply>systems/electrical/outputs/nav[0]</power-supply>
+    </nav-radio>
+
+    <nav-radio>
+        <name>nav</name>
+        <number>1</number>
+		<power-supply>systems/electrical/outputs/nav[1]</power-supply>
+    </nav-radio>
+
+    <slip-skid-ball>
+        <name>slip-skid-ball</name>
+        <number>0</number>
+    </slip-skid-ball>
+
+    <transponder>
+        <name>transponder</name>
+        <number>0</number>
+        <mode-c-altitude>/instrumentation/encoder/mode-c-alt-ft</mode-c-altitude>
+    </transponder>
+
+    <turn-indicator>
+        <name>turn-indicator</name>
+        <number>0</number>
+        <gyro>
+            <spin-up-sec>180.0</spin-up-sec>     <!-- ~3 minutes -->
+            <spin-down-sec>300.0</spin-down-sec> <!-- ~5 minutes -->
+        </gyro>
+    </turn-indicator>
+
+    <vertical-speed-indicator>
+        <name>vertical-speed-indicator</name>
+        <number>0</number>
+        <static-pressure>/systems/static-pressure-inhg-selected</static-pressure>
+    </vertical-speed-indicator>
+
+</PropertyList>

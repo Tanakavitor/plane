@@ -1,0 +1,13 @@
+# Index created on 2025-10-30T16:48:56+00:00
+version:1
+path:Aircraft/c172p/Systems/flight-recorder/components
+f:circuit-breakers.xml:0145c83acc0d9ade261777e4f8f6c14eb828dfbf:2302
+f:damage.xml:07b43609e3c3ddad589c0d36e26574117e95df3c:2076
+f:effects.xml:a352fd654f6d0ef641ce02541d1e1b166a18ec99:2996
+f:engine.xml:a1a7c05f3305908f5817a8a374e0c3f7927b96c4:3272
+f:gear-amphibious.xml:d953582e115e897ebba17159033416c3c3fd9dee:1734
+f:gear-fixed.xml:6ace105cf16c37de243573163543c7222ad8734d:375
+f:gear-skis.xml:d0758fd21014ada7dbd7a4371f8e89df1b05a557:1724
+f:surfaces.xml:2ba0f2223b6bd83bbee219336136228e1bceabff:1949
+f:switches.xml:d14e0c3217c0ffab8f9342d8c45aacec29eeecf5:6543
+f:systems-instruments.xml:50257ad820879db4a76ac153b1f9e05e205398e4:3843

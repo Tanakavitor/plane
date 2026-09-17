@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!-- FlightGear -> Intelligent Autopilot System (flight data). Install in $FG_ROOT/Protocol/ -->
+<PropertyList>
+ <generic>
+  <output>
+   <line_separator>newline</line_separator>
+   <var_separator>,</var_separator>
+   <chunk><name>sim_time</name><type>double</type><format>%.3f</format><node>/sim/time/elapsed-sec</node></chunk>
+   <chunk><name>lat</name><type>double</type><format>%.8f</format><node>/position/latitude-deg</node></chunk>
+   <chunk><name>lon</name><type>double</type><format>%.8f</format><node>/position/longitude-deg</node></chunk>
+   <chunk><name>alt_ft</name><type>double</type><format>%.3f</format><node>/position/altitude-ft</node></chunk>
+   <chunk><name>agl_ft</name><type>double</type><format>%.3f</format><node>/position/altitude-agl-ft</node></chunk>
+   <chunk><name>roll</name><type>double</type><format>%.4f</format><node>/orientation/roll-deg</node></chunk>
+   <chunk><name>pitch</name><type>double</type><format>%.4f</format><node>/orientation/pitch-deg</node></chunk>
+   <chunk><name>heading</name><type>double</type><format>%.4f</format><node>/orientation/heading-deg</node></chunk>
+   <chunk><name>roll_rate</name><type>double</type><format>%.4f</format><node>/orientation/roll-rate-degps</node></chunk>
+   <chunk><name>pitch_rate</name><type>double</type><format>%.4f</format><node>/orientation/pitch-rate-degps</node></chunk>
+   <chunk><name>yaw_rate</name><type>double</type><format>%.4f</format><node>/orientation/yaw-rate-degps</node></chunk>
+   <chunk><name>ias</name><type>double</type><format>%.3f</format><node>/velocities/airspeed-kt</node></chunk>
+   <chunk><name>gs_kt</name><type>double</type><format>%.3f</format><node>/velocities/groundspeed-kt</node></chunk>
+   <chunk><name>vs_fps</name><type>double</type><format>%.4f</format><node>/velocities/vertical-speed-fps</node></chunk>
+   <chunk><name>vn_fps</name><type>double</type><format>%.4f</format><node>/velocities/speed-north-fps</node></chunk>
+   <chunk><name>ve_fps</name><type>double</type><format>%.4f</format><node>/velocities/speed-east-fps</node></chunk>
+   <chunk><name>wow0</name><type>int</type><format>%d</format><node>/gear/gear[0]/wow</node></chunk>
+   <chunk><name>wow1</name><type>int</type><format>%d</format><node>/gear/gear[1]/wow</node></chunk>
+   <chunk><name>wow2</name><type>int</type><format>%d</format><node>/gear/gear[2]/wow</node></chunk>
+   <chunk><name>elevator_trim</name><type>double</type><format>%.5f</format><node>/controls/flight/elevator-trim</node></chunk>
+   <chunk><name>rpm</name><type>double</type><format>%.1f</format><node>/engines/active-engine/rpm</node></chunk>
+   <chunk><name>crashed</name><type>int</type><format>%d</format><node>/fdm/jsbsim/crash</node></chunk>
+   <chunk><name>wind_kt</name><type>double</type><format>%.2f</format><node>/environment/wind-speed-kt</node></chunk>
+   <chunk><name>wind_from</name><type>double</type><format>%.1f</format><node>/environment/wind-from-heading-deg</node></chunk>
+  </output>
+ </generic>
+</PropertyList>
