@@ -6,6 +6,12 @@
 #   ./launch_flightgear.sh 270 10             # crosswind from 270 deg at 10 kt
 #   ./launch_flightgear.sh 270 12 0.3         # ... plus turbulence 0.3 (0..1)
 #
+# A different initial condition (defaults = the recordings), relative to runway 02:
+#   DIST_M=4500 ALT_FT=1000 ./launch_flightgear.sh            # further out and higher
+#   OFFSET_M=-150 HEADING=10 SPEED_KT=95 ./launch_flightgear.sh 270 10
+#   DIST_M   metres before the threshold (2995)    OFFSET_M  metres right(+)/left(-) of the centreline (0)
+#   ALT_FT   altitude MSL, runway is at 143 ft (801)   HEADING deg true (0)   SPEED_KT (82)
+#
 # Start  `python 03_fly_flightgear.py`  in another terminal BEFORE running this script.
 set -e
 cd "$(dirname "$0")"
@@ -32,10 +38,12 @@ FG_ROOT_DIR="${FG_ROOT:-$HOME/Library/Application Support/FlightGear/fgdata_2024
 mkdir -p "$FG_ROOT_DIR/Protocol"
 cp fg/ias_out.xml fg/ias_in.xml "$FG_ROOT_DIR/Protocol/"
 
-# --- same initial state as the CSV demonstrations (first row of voo-com-*.csv) ---------------
+# --- initial state: by default the one of the CSV demonstrations (first row of voo-com-*.csv) ---
+read LAT LON < <(.venv/bin/python -m ias.config "${DIST_M:-2995}" "${OFFSET_M:-0}")
+echo "start: lat $LAT lon $LON  alt ${ALT_FT:-801} ft  heading ${HEADING:-0}  ${SPEED_KT:-82} kt  wind ${WIND_FROM}@${WIND_KT}"
 exec "$FGFS" \
   --aircraft=c172p \
-  --lat=63.93762 --lon=-22.60547 --altitude=801 --heading=0 --vc=82 \
+  --lat="$LAT" --lon="$LON" --altitude="${ALT_FT:-801}" --heading="${HEADING:-0}" --vc="${SPEED_KT:-82}" \
   --timeofday=noon --disable-real-weather-fetch --disable-ai-traffic \
   --wind="${WIND_FROM}@${WIND_KT}" --turbulence="${TURBULENCE}" \
   --prop:/controls/flight/elevator-trim=-0.03 \
