@@ -33,6 +33,21 @@ FlightGear in /Applications or on the mounted DMG (mounting `~/Downloads/flightg
 if needed); override with `FG_APP=/path/FlightGear.app`. A connected joystick will fight the
 autopilot for the same `/controls` properties — unplug it or leave it centred.
 
+### Other initial conditions
+Defaults reproduce the recordings; override them relative to runway 02 with environment variables
+(`launch_flightgear.sh`, `run_demo.sh`) or flags (`reset_flightgear.py --dist --offset --alt --heading --speed`):
+
+```bash
+DIST_M=4500 ALT_FT=1000 ./run_demo.sh                       # further out, higher
+OFFSET_M=-150 HEADING=10 SPEED_KT=95 ./run_demo.sh 270 10   # left of the centreline, fast, crosswind
+```
+
+`python -m sim.ic_sweep` tries a range of starts in the headless bench. There the IAS still lands on the
+runway from 1.2–6 km out, up to ~200 m beside the centreline, 30° off heading, 65–105 kt and 600–1300 ft;
+it fails when started 400 m to the side (touches down beside the runway) or too low to reach it (450 ft at 3 km).
+Outside the demonstrated range the ANN inputs are clipped, so behaviour degrades gracefully rather than wildly,
+but only the recorded start has been flown in FlightGear itself.
+
 ### Seeing what the model does
 * `05_monitor.py` — live window: yoke / rudder / throttle / flaps / brakes as sent, "what each ANN
   wants vs. what the aircraft does", and the flight path over the human demonstrations.

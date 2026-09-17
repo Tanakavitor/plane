@@ -2,16 +2,26 @@
 so another autonomous landing can be flown without restarting the simulator.
 
     python reset_flightgear.py [wind_from_deg wind_kt [gust_kt]]      e.g.  270 12 20  ->  METAR 27012G20KT
+    python reset_flightgear.py --dist 4500 --alt 1000                 a different start (see --help)
 """
+import argparse
 import socket
-import sys
 import time
 
-from ias.config import INITIAL_CONDITION as IC
+from ias.config import start_condition
 
 
 def main():
-    a = sys.argv[1:]
+    ap = argparse.ArgumentParser()
+    ap.add_argument("wind", nargs="*", help="wind_from_deg wind_kt [gust_kt]")
+    ap.add_argument("--dist", type=float, default=2995.0, help="metres before the runway 02 threshold")
+    ap.add_argument("--offset", type=float, default=0.0, help="metres right(+)/left(-) of the centreline")
+    ap.add_argument("--alt", type=float, default=801.0, help="altitude ft MSL (runway = 143 ft)")
+    ap.add_argument("--heading", type=float, default=0.0)
+    ap.add_argument("--speed", type=float, default=82.0, help="airspeed kt")
+    args = ap.parse_args()
+    a = args.wind
+    IC = start_condition(args.dist, args.offset, args.alt, args.heading, args.speed)
     conn = {}
 
     def connect():

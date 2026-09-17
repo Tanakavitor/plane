@@ -69,3 +69,21 @@ INITIAL_CONDITION = dict(
     lat=63.93762, lon=-22.60547, alt_ft=801.0, heading=0.0, ias_kt=82.0,
     elevator_trim=-0.03,
 )
+
+
+def start_condition(dist_m: float = 2995.0, offset_m: float = 0.0, alt_ft: float = 801.0, heading: float = 0.0,
+                    ias_kt: float = 82.0, runway: str = DEFAULT_RUNWAY) -> dict:
+    """An initial condition described relative to the runway: `dist_m` before the threshold on the
+    extended centreline, `offset_m` to the right of it (negative = left). Defaults = the recordings."""
+    r = BIKF[runway]
+    h = math.radians(r.hdg)
+    dn = -dist_m * math.cos(h) - offset_m * math.sin(h)
+    de = -dist_m * math.sin(h) + offset_m * math.cos(h)
+    return dict(lat=r.lat + dn / r.m_per_deg_lat, lon=r.lon + de / r.m_per_deg_lon, alt_ft=alt_ft,
+                heading=heading, ias_kt=ias_kt, elevator_trim=INITIAL_CONDITION["elevator_trim"])
+
+
+if __name__ == "__main__":      # used by launch_flightgear.sh:  python -m ias.config DIST OFFSET  ->  "lat lon"
+    import sys
+    c = start_condition(float(sys.argv[1]), float(sys.argv[2]))
+    print(f"{c['lat']:.6f} {c['lon']:.6f}")
