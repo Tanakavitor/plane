@@ -69,7 +69,10 @@ class ANN:
 
     # ---- training ------------------------------------------------------------------------
     def fit(self, x, y, epochs: int = 300, batch: int = 32, target_mse: float = 0.01,
-            min_epochs: int = 40, seed: int = 0, verbose: bool = False, input_pct=INPUT_PCT) -> list[float]:
+            min_epochs: int = 40, seed: int = 0, verbose: bool = False, input_pct=INPUT_PCT,
+            val: tuple | None = None) -> list[float]:
+        """Returns the training MSE per epoch (scaled units). With val=(x, y) the validation MSE per
+        epoch is also recorded in self.meta["val_history"]."""
         x, y = np.atleast_2d(x.T).T.astype(float), np.atleast_2d(y.T).T.astype(float)
         lo, hi = np.percentile(x, input_pct[0], axis=0), np.percentile(x, input_pct[1], axis=0)
         ylo, yhi = np.percentile(y, 0.5, axis=0), np.percentile(y, 99.5, axis=0)
@@ -81,9 +84,12 @@ class ANN:
         X = np.clip(self.in_scaler.fwd(x), -1, 1)
         Y = np.clip(self.out_scaler.fwd(y), -TARGET_SPAN, TARGET_SPAN)
 
+        if val is not None:
+            xv, yv = np.atleast_2d(val[0].T).T.astype(float), np.atleast_2d(val[1].T).T.astype(float)
+            XV, YV = np.clip(self.in_scaler.fwd(xv), -1, 1), np.clip(self.out_scaler.fwd(yv), -TARGET_SPAN, TARGET_SPAN)
         rng = np.random.default_rng(seed)
         vel = [np.zeros_like(p) for p in (self.W1, self.b1, self.W2, self.b2)]
-        history = []
+        history, val_history = [], []
         for ep in range(epochs):
             order = rng.permutation(len(X))
             for i in range(0, len(X), batch):
@@ -101,11 +107,13 @@ class ANN:
                     p += v
             mse = float(np.mean((self._forward(X)[1] - Y) ** 2))
             history.append(mse)
+            if val is not None:
+                val_history.append(float(np.mean((self._forward(XV)[1] - YV) ** 2)))
             if verbose and ep % 20 == 0:
                 print(f"    epoch {ep:4d}  mse {mse:.5f}")
             if ep + 1 >= min_epochs and (mse < target_mse and abs(history[-10] - mse) < 1e-5):
                 break
-        self.meta.update(mse=history[-1], epochs=len(history), n_samples=int(len(X)))
+        self.meta.update(mse=history[-1], epochs=len(history), n_samples=int(len(X)), history=history, val_history=val_history)
         return history
 
     # ---- persistence ---------------------------------------------------------------------
